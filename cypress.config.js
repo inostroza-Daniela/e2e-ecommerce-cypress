@@ -38,7 +38,18 @@ module.exports = defineConfig({
       addMatchImageSnapshotPlugin(on);
 
       on('before:browser:launch', (browser, launchOptions) => {
-        if (browser.family === 'chromium' && browser.isHeadless) {
+        if (browser.family !== 'chromium' || browser.name === 'electron') {
+          return launchOptions;
+        }
+
+        Object.assign(launchOptions.preferences.default, {
+          credentials_enable_service: false,
+          'profile.password_manager_enabled': false,
+          'profile.password_manager_leak_detection': false,
+        });
+        launchOptions.args.push('--disable-features=PasswordLeakDetection');
+
+        if (browser.isHeadless) {
           launchOptions.args.push('--window-size=1600,1200', '--force-device-scale-factor=1');
         }
         return launchOptions;
