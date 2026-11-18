@@ -89,6 +89,6 @@ jobs:
           name: failure-evidence
           path: |
             cypress/results/screenshots
-            cypress/snapshots/**/__diff_output__
+            cypress/results/snapshot-diffs
           if-no-files-found: ignore
           retention-days: 14

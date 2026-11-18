@@ -37,6 +37,13 @@ module.exports = defineConfig({
       registerMochawesomeReporter(on);
       addMatchImageSnapshotPlugin(on);
 
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.family === 'chromium' && browser.isHeadless) {
+          launchOptions.args.push('--window-size=1600,1200', '--force-device-scale-factor=1');
+        }
+        return launchOptions;
+      });
+
       return config;
     },
   },

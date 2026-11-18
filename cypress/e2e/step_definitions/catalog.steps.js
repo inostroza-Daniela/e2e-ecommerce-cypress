@@ -104,7 +104,7 @@ Then('each product image should be placed {word} its details', (position) => {
 
   inventoryPage.elements.cards().should(($cards) => {
     Cypress._.each($cards, (card) => {
-      const image = card.querySelector('img[data-test$="-img"]').getBoundingClientRect();
+      const image = card.querySelector('[data-test$="-img-link"]').getBoundingClientRect();
       const details = card.querySelector('[data-test="inventory-item-description"]').getBoundingClientRect();
       check(image, details);
     });

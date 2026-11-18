@@ -4,5 +4,4 @@ node_modules
 cypress/results
 cypress/videos
 cypress/downloads
-**/__diff_output__
 .DS_Store
