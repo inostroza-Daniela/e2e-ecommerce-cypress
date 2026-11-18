@@ -31,8 +31,12 @@
     "cypress-mochawesome-reporter": "^5.0.0",
     "cypress-on-fix": "^1.1.0",
     "esbuild": "^0.28.2",
-    "eslint": "^10.14.0",
+    "eslint": "^10.15.0",
     "eslint-plugin-cypress": "^7.0.2",
     "globals": "^17.13.0"
+  },
+  "overrides": {
+    "glob": "^14.0.6",
+    "minimatch": "^11.0.9"
   }
 }
