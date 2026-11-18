@@ -10,7 +10,8 @@ module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
     reportDir: 'cypress/results/report',
-    reportPageTitle: 'Swag Labs - E2E Report',
+    reportTitle: 'Suite E2E · Swag Labs',
+    reportPageTitle: 'Reporte E2E · Swag Labs',
     charts: true,
     embeddedScreenshots: false,
     inlineAssets: true,
