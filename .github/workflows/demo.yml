@@ -22,18 +22,23 @@ jobs:
             e2e-ecommerce-cypress \
             --browser chrome \
             --spec cypress/e2e/features/checkout.feature \
-            --expose "tags=@e2e" \
-            --config "video=true,videosFolder=cypress/results/videos,retries=0"
+            --expose "tags=@e2e,demoDelay=700" \
+            --config "video=true,videosFolder=cypress/results/videos,retries=0,testIsolation=false"
 
       - name: Convert recording to GIF
+        env:
+          TRAILING_CLEANUP_SECONDS: '0.6'
+          FINAL_FRAME_HOLD_SECONDS: '3'
         run: |
           command -v ffmpeg >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; }
           video=$(find cypress/results/videos -name '*.mp4' | head -n 1)
+          duration=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$video")
+          length=$(echo "$duration - $TRAILING_CLEANUP_SECONDS" | bc)
           mkdir -p docs
-          ffmpeg -y -loglevel error -i "$video" \
-            -vf "setpts=1.6*PTS,fps=12,scale=1100:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4" \
+          ffmpeg -y -loglevel error -t "$length" -i "$video" \
+            -vf "fps=10,scale=1000:-1:flags=lanczos,tpad=stop_mode=clone:stop_duration=$FINAL_FRAME_HOLD_SECONDS,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4" \
             docs/demo.gif
-          ls -lh docs/demo.gif
+          echo "Recording: ${duration}s" && ls -lh docs/demo.gif
 
       - name: Commit demo
         run: |

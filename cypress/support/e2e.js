@@ -1,6 +1,7 @@
 import 'cypress-mochawesome-reporter/register';
 import { addMatchImageSnapshotCommand } from '@simonsmith/cypress-image-snapshot/command';
 import './commands';
+import './demo';
 
 addMatchImageSnapshotCommand({
   e2eSpecDir: 'cypress/e2e/features/',
