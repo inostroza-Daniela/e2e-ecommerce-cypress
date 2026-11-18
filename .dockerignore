@@ -5,3 +5,4 @@ cypress/results
 cypress/videos
 cypress/downloads
 .DS_Store
+docs
