@@ -12,7 +12,7 @@ module.exports = defineConfig({
     reportDir: 'cypress/results/report',
     reportPageTitle: 'Swag Labs - E2E Report',
     charts: true,
-    embeddedScreenshots: true,
+    embeddedScreenshots: false,
     inlineAssets: true,
     saveAllAttempts: false,
   },

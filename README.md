@@ -22,7 +22,7 @@ End-to-end UI tests for **[Swag Labs](https://www.saucedemo.com)**, the public e
 | Test runner | [Cypress](https://www.cypress.io) 16 (JavaScript) |
 | BDD | [@badeball/cypress-cucumber-preprocessor](https://github.com/badeball/cypress-cucumber-preprocessor) + esbuild |
 | Design pattern | Page Object Model + custom commands |
-| Reporting | [cypress-mochawesome-reporter](https://github.com/LironEr/cypress-mochawesome-reporter) with embedded failure screenshots |
+| Reporting | [cypress-mochawesome-reporter](https://github.com/LironEr/cypress-mochawesome-reporter) with failure screenshots |
 | Visual regression | [@simonsmith/cypress-image-snapshot](https://github.com/simonsmith/cypress-image-snapshot) |
 | Static analysis | ESLint + eslint-plugin-cypress |
 | Containers | Docker (`cypress/included`) |
@@ -112,11 +112,11 @@ git add cypress/snapshots
 
 CI runs with `requireSnapshots=true`, so a missing baseline fails the build instead of being silently created. When a comparison fails, the diff image is uploaded as a build artifact.
 
-Baselines can also be regenerated on the CI runner itself: trigger the workflow manually with **update_snapshots** enabled, download the `visual-baselines` artifact and commit its contents to `cypress/snapshots/`.
+Baselines can also be regenerated on the CI runner itself: trigger the workflow manually with **update_snapshots** enabled and the job commits the new images to `cypress/snapshots/`.
 
 ## Reports
 
-Each run generates an HTML report with charts, the Gherkin steps of every scenario and embedded screenshots for failures:
+Each run generates an HTML report with charts, the Gherkin steps of every scenario and screenshots for failures:
 
 ```
 cypress/results/report/index.html
