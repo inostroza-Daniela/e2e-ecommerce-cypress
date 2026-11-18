@@ -82,7 +82,7 @@ npm ci
 | --- | --- |
 | `npm run cy:open` | Abre la interfaz de Cypress para ejecutar escenarios en modo interactivo |
 | `npm test` | Ejecuta la suite completa en modo headless |
-| `npm run test:local` | Ejecuta en headless sin `@visual` (recomendado en macOS/Windows, ver más abajo) |
+| `npm run test:local` | Ejecuta en headless sin los escenarios `@visual` |
 | `npm run test:smoke` | Ejecuta solo los escenarios `@smoke` |
 | `npm run lint` | Análisis estático |
 
@@ -105,7 +105,7 @@ El contenedor usa Chrome. Los reportes, screenshots de fallos y diferencias visu
 
 ## Regresión visual
 
-Los screenshots se renderizan distinto según el sistema operativo (fuentes, antialiasing), así que las imágenes base se generan y comparan **solo dentro de la imagen Docker**, la misma que usa el CI. La imagen se construye para `linux/amd64` para calzar con los runners de GitHub, también en Apple Silicon.
+Los screenshots se renderizan distinto según el sistema operativo (fuentes, antialiasing, pantallas Retina), así que las imágenes base se generan y comparan **solo en Linux**, dentro de la imagen Docker que también usa el CI. En macOS y Windows los escenarios `@visual` se marcan como omitidos en vez de fallar. La imagen se construye para `linux/amd64` para calzar con los runners de GitHub, también en Apple Silicon.
 
 La forma más simple de regenerar las imágenes base es desde GitHub: **Actions → E2E Tests → Run workflow** con **update_snapshots** activado. El job commitea las imágenes nuevas en `cypress/snapshots/`.
 

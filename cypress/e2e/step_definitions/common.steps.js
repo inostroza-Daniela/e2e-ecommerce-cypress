@@ -16,6 +16,11 @@ Then('veo el catálogo de productos', () => {
 });
 
 Then('la página coincide con el diseño aprobado {string}', (snapshotName) => {
+  if (Cypress.platform !== 'linux') {
+    cy.log('Visual baselines are rendered on Linux; run `npm run docker:test` to compare them');
+    return 'skipped';
+  }
+
   cy.waitForPageAssets();
   cy.matchImageSnapshot(snapshotName, { blackout: DYNAMIC_CONTENT });
 });

@@ -82,7 +82,7 @@ npm ci
 | --- | --- |
 | `npm run cy:open` | Opens the Cypress UI to run scenarios interactively |
 | `npm test` | Runs the whole suite headless |
-| `npm run test:local` | Runs headless excluding `@visual` (recommended on macOS/Windows, see below) |
+| `npm run test:local` | Runs headless excluding `@visual` scenarios |
 | `npm run test:smoke` | Runs only `@smoke` scenarios |
 | `npm run lint` | Static analysis |
 
@@ -105,7 +105,7 @@ The container runs Chrome. Reports, failure screenshots and snapshot diffs are w
 
 ## Visual regression
 
-Screenshots render differently across operating systems (fonts, anti-aliasing), so baselines are generated and compared **only inside the Docker image**, the same one CI uses. The image is built for `linux/amd64` to match GitHub-hosted runners, including on Apple Silicon.
+Screenshots render differently across operating systems (fonts, anti-aliasing, Retina displays), so baselines are generated and compared **only on Linux**, inside the Docker image that CI also uses. On macOS and Windows, `@visual` scenarios are reported as skipped instead of failing. The image is built for `linux/amd64` to match GitHub-hosted runners, including on Apple Silicon.
 
 The simplest way to regenerate baselines is from GitHub: **Actions → E2E Tests → Run workflow** with **update_snapshots** enabled. The job commits the new images to `cypress/snapshots/`.
 
