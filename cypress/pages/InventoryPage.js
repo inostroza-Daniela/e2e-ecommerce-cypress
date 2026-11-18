@@ -19,7 +19,7 @@ class InventoryPage {
   };
 
   visit(options) {
-    cy.visit(this.path, options);
+    cy.visitRoute(this.path, options);
     return this;
   }
 

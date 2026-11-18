@@ -56,6 +56,7 @@ cypress/
 ## Design decisions
 
 - **Login once, reuse everywhere.** `cy.login(username, password)` performs a real UI login wrapped in `cy.session()`, cached across specs and validated against the session cookie. Login itself is tested through the UI in `login.feature`; every other feature starts already authenticated, which keeps scenarios fast and independent.
+- **Deep links without redirects.** The demo is a single-page app on GitHub Pages: requesting `/inventory.html` directly returns HTTP 404 and a script redirects to `/?/inventory.html`. `cy.visitRoute()` goes straight to the canonical URL, so tests keep strict status-code checks instead of disabling them.
 - **State is seeded, not clicked.** Scenarios that need a pre-filled cart write it straight into the application's storage before the page loads (`cy.visitWithCart`). Only the scenarios that test adding products go through the UI to do it.
 - **No hard waits.** Every wait is an assertion that Cypress retries (`should`), an explicit timeout, or a network alias created with `cy.intercept()`. The `cypress/no-unnecessary-waiting` lint rule turns any `cy.wait(ms)` into a build error.
 - **Network control.** Third-party telemetry is stubbed on every test so results never depend on an external service. Failed logins are captured through an intercept to assert that they are reported to error monitoring **without leaking the password**.

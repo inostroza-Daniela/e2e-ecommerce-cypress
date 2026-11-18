@@ -4,6 +4,8 @@ import inventoryPage from '../pages/InventoryPage';
 const SESSION_COOKIE = 'session-username';
 const CART_STORAGE_KEY = 'cart-contents';
 
+Cypress.Commands.add('visitRoute', (route, options) => cy.visit(`/?${route}`, options));
+
 Cypress.Commands.add('getByTestId', (testId, options) => cy.get(`[data-test="${testId}"]`, options));
 
 Cypress.Commands.add('login', (username, password) => {
@@ -33,7 +35,7 @@ Cypress.Commands.add('loginAs', (persona) => {
 });
 
 Cypress.Commands.add('visitWithCart', (path, productIds) => {
-  cy.visit(path, {
+  cy.visitRoute(path, {
     onBeforeLoad(win) {
       win.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(productIds));
     },
