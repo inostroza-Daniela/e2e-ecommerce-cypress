@@ -13,14 +13,14 @@
     "node": ">=22"
   },
   "scripts": {
-    "cy:open": "cypress open --e2e --browser electron",
-    "test": "cypress run --browser electron",
-    "test:local": "cypress run --browser electron --expose \"tags=not @visual\"",
-    "test:smoke": "cypress run --browser electron --expose tags=@smoke",
+    "cy:open": "cypress open --e2e",
+    "test": "cypress run",
+    "test:local": "cypress run --expose \"tags=not @visual\"",
+    "test:smoke": "cypress run --expose tags=@smoke",
     "lint": "eslint .",
     "docker:build": "docker build --platform linux/amd64 -t e2e-ecommerce-cypress .",
-    "docker:test": "docker run --rm --platform linux/amd64 -v \"$PWD/cypress/reports:/e2e/cypress/reports\" -v \"$PWD/cypress/screenshots:/e2e/cypress/screenshots\" -v \"$PWD/cypress/snapshots:/e2e/cypress/snapshots\" e2e-ecommerce-cypress",
-    "docker:snapshots": "npm run docker:test -- --browser electron --expose \"tags=@visual,updateSnapshots=true\""
+    "docker:test": "docker run --rm --platform linux/amd64 -v \"$PWD/cypress/results:/e2e/cypress/results\" -v \"$PWD/cypress/snapshots:/e2e/cypress/snapshots\" e2e-ecommerce-cypress",
+    "docker:snapshots": "npm run docker:test -- --browser chrome --expose \"tags=@visual,updateSnapshots=true\""
   },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^28.0.1",

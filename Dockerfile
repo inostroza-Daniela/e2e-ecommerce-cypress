@@ -10,4 +10,4 @@ RUN npm ci --no-audit --no-fund
 COPY . .
 
 ENTRYPOINT ["npx", "cypress", "run"]
-CMD ["--browser", "electron"]
+CMD ["--browser", "chrome"]

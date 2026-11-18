@@ -97,7 +97,7 @@ npm run docker:build
 npm run docker:test
 ```
 
-Reports, failure screenshots and snapshot diffs are written back to the host through mounted volumes.
+The container runs Chrome. Reports, failure screenshots and snapshot diffs are written back to the host under `cypress/results/` and `cypress/snapshots/`.
 
 ## Visual regression
 
@@ -118,7 +118,7 @@ Baselines can also be regenerated on the CI runner itself: trigger the workflow 
 Each run generates an HTML report with charts, the Gherkin steps of every scenario and embedded screenshots for failures:
 
 ```
-cypress/reports/index.html
+cypress/results/report/index.html
 ```
 
 In CI the report is published as the `mochawesome-report` artifact of every workflow run.

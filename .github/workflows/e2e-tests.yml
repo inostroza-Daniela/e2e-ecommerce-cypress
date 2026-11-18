@@ -16,7 +16,7 @@ on:
         default: false
 
 concurrency:
-  group: e2e-${{ github.ref }}
+  group: e2e-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
@@ -60,18 +60,17 @@ jobs:
             if [ -n "$TAGS" ]; then EXPOSE="$EXPOSE,tags=$TAGS"; fi
           fi
           docker run --rm \
-            -v "$GITHUB_WORKSPACE/cypress/reports:/e2e/cypress/reports" \
-            -v "$GITHUB_WORKSPACE/cypress/screenshots:/e2e/cypress/screenshots" \
+            -v "$GITHUB_WORKSPACE/cypress/results:/e2e/cypress/results" \
             -v "$GITHUB_WORKSPACE/cypress/snapshots:/e2e/cypress/snapshots" \
             e2e-ecommerce-cypress \
-            --browser electron --expose "$EXPOSE"
+            --browser chrome --expose "$EXPOSE"
 
       - name: Upload Mochawesome report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: mochawesome-report
-          path: cypress/reports
+          path: cypress/results/report
           if-no-files-found: ignore
           retention-days: 14
 
@@ -89,7 +88,7 @@ jobs:
         with:
           name: failure-evidence
           path: |
-            cypress/screenshots
+            cypress/results/screenshots
             cypress/snapshots/**/__diff_output__
           if-no-files-found: ignore
           retention-days: 14

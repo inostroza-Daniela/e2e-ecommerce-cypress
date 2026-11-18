@@ -4,7 +4,7 @@ const globals = require('globals');
 
 module.exports = [
   {
-    ignores: ['node_modules/', 'cypress/reports/', 'cypress/screenshots/', 'cypress/videos/', 'cypress/downloads/'],
+    ignores: ['node_modules/', 'cypress/results/', 'cypress/videos/', 'cypress/downloads/'],
   },
   js.configs.recommended,
   {

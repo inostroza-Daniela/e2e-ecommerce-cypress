@@ -9,7 +9,7 @@ const chainPluginEvents = require('cypress-on-fix');
 module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
-    reportDir: 'cypress/reports',
+    reportDir: 'cypress/results/report',
     reportPageTitle: 'Swag Labs - E2E Report',
     charts: true,
     embeddedScreenshots: true,
@@ -20,6 +20,7 @@ module.exports = defineConfig({
   viewportHeight: 800,
   defaultCommandTimeout: 6000,
   screenshotOnRunFailure: true,
+  screenshotsFolder: 'cypress/results/screenshots',
   video: false,
   retries: {
     runMode: 1,
