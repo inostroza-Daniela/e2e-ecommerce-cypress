@@ -5,6 +5,7 @@
 ![Cucumber](https://img.shields.io/badge/BDD-Cucumber-23D96C?logo=cucumber&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+[![Reporte](https://img.shields.io/badge/reporte-Mochawesome-4C1?logo=mocha&logoColor=white)](https://inostroza-daniela.github.io/e2e-ecommerce-cypress/)
 
 **Español** · [English](README.en.md)
 
@@ -127,13 +128,15 @@ El CI corre con `requireSnapshots=true`, así que si falta una imagen base el bu
 
 ## Reportes
 
+**[Ver el reporte de la última ejecución en `main`](https://inostroza-daniela.github.io/e2e-ecommerce-cypress/)**
+
 Cada ejecución genera un reporte HTML con gráficos, los pasos Gherkin de cada escenario y screenshots de los fallos:
 
 ```
 cypress/results/report/index.html
 ```
 
-En el CI, el reporte se publica como el artifact `mochawesome-report` de cada ejecución.
+En el CI, el reporte se publica en GitHub Pages después de cada push a `main`, y además queda como el artifact `mochawesome-report` de cada ejecución.
 
 ## Ejemplo BDD
 
@@ -173,6 +176,7 @@ El workflow `.github/workflows/e2e-tests.yml` corre en cada push a `main`, en ca
 
 1. **lint**: instala las dependencias sin el binario de Cypress y ejecuta ESLint.
 2. **e2e**: construye la imagen Docker y ejecuta la suite completa. Sube el reporte Mochawesome y, si algo falla, los screenshots y las diferencias visuales.
+3. **publish-report**: en los push a `main`, publica el reporte en GitHub Pages.
 
 La ejecución manual (`workflow_dispatch`) acepta una expresión de tags para correr una parte de los escenarios, o la opción de regenerar las imágenes base.
 

@@ -5,6 +5,7 @@
 ![Cucumber](https://img.shields.io/badge/BDD-Cucumber-23D96C?logo=cucumber&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+[![Report](https://img.shields.io/badge/report-Mochawesome-4C1?logo=mocha&logoColor=white)](https://inostroza-daniela.github.io/e2e-ecommerce-cypress/)
 
 [Español](README.md) · **English**
 
@@ -127,13 +128,15 @@ CI runs with `requireSnapshots=true`, so a missing baseline fails the build inst
 
 ## Reports
 
+**[View the report of the latest run on `main`](https://inostroza-daniela.github.io/e2e-ecommerce-cypress/)**
+
 Each run generates an HTML report with charts, the Gherkin steps of every scenario and screenshots for failures:
 
 ```
 cypress/results/report/index.html
 ```
 
-In CI the report is published as the `mochawesome-report` artifact of every workflow run.
+In CI the report is published to GitHub Pages after every push to `main`, and also kept as the `mochawesome-report` artifact of every workflow run.
 
 ## BDD example
 
@@ -173,6 +176,7 @@ The workflow in `.github/workflows/e2e-tests.yml` runs on every push to `main`, 
 
 1. **lint**: installs dependencies without the Cypress binary and runs ESLint.
 2. **e2e**: builds the Docker image and runs the full suite, uploading the Mochawesome report and, on failure, screenshots and visual diffs.
+3. **publish-report**: on pushes to `main`, publishes the report to GitHub Pages.
 
 A manual run (`workflow_dispatch`) accepts a tag expression to execute a subset of scenarios, or the option to regenerate visual baselines.
 
