@@ -10,6 +10,12 @@
 
 Pruebas end-to-end de interfaz para **[Swag Labs](https://www.saucedemo.com)**, la tienda demo pública de Sauce Labs. La suite cubre el recorrido de compra completo (inicio de sesión, catálogo, carro y checkout), casos negativos, diseño responsive y regresión visual. Los escenarios están escritos en Gherkin en español, legibles para producto y QA manual, sobre un Page Object Model.
 
+## Demo
+
+![Escenario de compra completo ejecutándose en Cypress](docs/demo.gif)
+
+*Escenario "Cliente compra productos del catálogo": login, carro, despacho, verificación del total con impuesto y confirmación del pedido. Grabado en el CI con el workflow **Demo Recording**.*
+
 ## Por qué Swag Labs
 
 - Su HTML expone atributos `data-test` estables, así que los selectores no dependen de clases CSS ni de la posición en el DOM.
@@ -169,6 +175,8 @@ El workflow `.github/workflows/e2e-tests.yml` corre en cada push a `main`, en ca
 2. **e2e**: construye la imagen Docker y ejecuta la suite completa. Sube el reporte Mochawesome y, si algo falla, los screenshots y las diferencias visuales.
 
 La ejecución manual (`workflow_dispatch`) acepta una expresión de tags para correr una parte de los escenarios, o la opción de regenerar las imágenes base.
+
+El workflow `.github/workflows/demo.yml` (**Demo Recording**) graba el escenario de compra, lo convierte en GIF y actualiza `docs/demo.gif`. Para que se pueda seguir a simple vista, ese workflow activa una pausa entre acciones (`demoDelay`) que la suite normal no usa.
 
 ## Alcance
 
