@@ -3,7 +3,10 @@ import loginPage from '../../pages/LoginPage';
 import inventoryPage from '../../pages/InventoryPage';
 import header from '../../pages/components/Header';
 
-const CREDENTIAL_FIELDS = ['username', 'password'];
+const CREDENTIAL_FIELDS = {
+  usuario: 'username',
+  contraseña: 'password',
+};
 
 const withPersona = (persona, callback) =>
   cy.fixture('users').then((users) => {
@@ -15,19 +18,20 @@ const withPersona = (persona, callback) =>
     callback(user);
   });
 
-Given('I am on the login page', () => {
+Given('que estoy en la página de inicio de sesión', () => {
   loginPage.visit();
 });
 
-When('I log in as a/an {string} customer', (persona) => {
+When('inicio sesión como cliente {string}', (persona) => {
   withPersona(persona, ({ username, password }) => {
     loginPage.loginWith(username, password);
   });
 });
 
-When('I try to log in as a/an {string} customer without a/an {word}', (persona, missingField) => {
-  if (!CREDENTIAL_FIELDS.includes(missingField)) {
-    throw new Error(`Unsupported credential field "${missingField}"`);
+When('intento iniciar sesión como cliente {string} sin {word}', (persona, fieldLabel) => {
+  const missingField = CREDENTIAL_FIELDS[fieldLabel];
+  if (!missingField) {
+    throw new Error(`Unsupported credential field "${fieldLabel}"`);
   }
   withPersona(persona, (user) => {
     const credentials = { ...user, [missingField]: '' };
@@ -35,26 +39,26 @@ When('I try to log in as a/an {string} customer without a/an {word}', (persona, 
   });
 });
 
-When('I log out', () => {
+When('cierro sesión', () => {
   header.logout();
 });
 
-Then('I should see the product catalog within {int} seconds', (seconds) => {
+Then('veo el catálogo de productos en menos de {int} segundos', (seconds) => {
   const timeout = seconds * 1000;
   cy.location('pathname', { timeout }).should('eq', inventoryPage.path);
   inventoryPage.elements.cards({ timeout }).should('have.length.greaterThan', 0);
 });
 
-Then('I should see the login error {string}', (message) => {
+Then('veo el error de inicio de sesión {string}', (message) => {
   loginPage.elements.error().should('be.visible').and('contain.text', message);
 });
 
-Then('I should be/remain on the login page', () => {
+Then('estoy/sigo en la página de inicio de sesión', () => {
   cy.location('pathname').should('eq', loginPage.path);
   loginPage.elements.submitButton().should('be.visible');
 });
 
-Then('the failed attempt should be reported to error monitoring without exposing the password', () => {
+Then('el intento fallido se reporta al servicio de monitoreo sin exponer la contraseña', () => {
   cy.get('@loginAttempt').then(({ username, password }) => {
     cy.wait('@errorReport')
       .its('request.body')
@@ -66,7 +70,7 @@ Then('the failed attempt should be reported to error monitoring without exposing
   });
 });
 
-Then('I should not be able to open the catalog without logging in again', () => {
+Then('no puedo entrar al catálogo sin volver a iniciar sesión', () => {
   cy.getCookie('session-username').should('be.null');
   inventoryPage.visit();
   cy.location('pathname').should('eq', loginPage.path);

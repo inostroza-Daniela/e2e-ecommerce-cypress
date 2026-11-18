@@ -1,45 +1,46 @@
+# language: es
 @cart
-Feature: Shopping cart
-  As a customer
-  I want to collect the products I intend to buy
-  So that I can review them before paying
+Característica: Carro de compras
+  Como cliente
+  Quiero reunir los productos que pienso comprar
+  Para revisarlos antes de pagar
 
-  Background:
-    Given I am logged in as a "standard" customer
+  Antecedentes:
+    Dado que inicié sesión como cliente "estándar"
 
-  Scenario: An empty cart shows no item counter
-    Then the cart counter should not be displayed
+  Escenario: Con el carro vacío no se muestra el contador
+    Entonces no se muestra el contador del carro
 
   @smoke
-  Scenario: Adding products updates the cart counter
-    When I add the following products to the cart:
-      | product               |
+  Escenario: Agregar productos actualiza el contador del carro
+    Cuando agrego los siguientes productos al carro:
+      | producto              |
       | Sauce Labs Backpack   |
       | Sauce Labs Bike Light |
-    Then the cart counter should show 2
-    And the added products should be marked as in the cart
+    Entonces el contador del carro muestra 2
+    Y los productos agregados aparecen marcados como en el carro
 
-  Scenario: Cart lists the selected products with quantity and price
-    When I add the following products to the cart:
-      | product                 |
+  Escenario: El carro muestra los productos elegidos con su cantidad y precio
+    Cuando agrego los siguientes productos al carro:
+      | producto                |
       | Sauce Labs Bolt T-Shirt |
       | Sauce Labs Onesie       |
-    And I open the cart
-    Then the cart should list each selected product with quantity 1 and its catalog price
+    Y abro el carro
+    Entonces el carro muestra cada producto elegido con cantidad 1 y su precio de catálogo
 
-  Scenario: Customer removes a product from the cart
-    Given my cart already contains:
-      | product                  |
+  Escenario: Cliente quita un producto del carro
+    Dado que mi carro ya contiene:
+      | producto                 |
       | Sauce Labs Backpack      |
       | Sauce Labs Fleece Jacket |
-    When I open the cart
-    And I remove "Sauce Labs Backpack" from the cart
-    Then the cart should only contain "Sauce Labs Fleece Jacket"
-    And the cart counter should show 1
+    Cuando abro el carro
+    Y quito "Sauce Labs Backpack" del carro
+    Entonces el carro solo contiene "Sauce Labs Fleece Jacket"
+    Y el contador del carro muestra 1
 
-  Scenario: Cart keeps its contents while the customer keeps shopping
-    When I add "Sauce Labs Onesie" to the cart
-    And I open the cart
-    And I continue shopping
-    Then the added products should be marked as in the cart
-    And the cart counter should show 1
+  Escenario: El carro conserva su contenido mientras el cliente sigue comprando
+    Cuando agrego "Sauce Labs Onesie" al carro
+    Y abro el carro
+    Y sigo comprando
+    Entonces los productos agregados aparecen marcados como en el carro
+    Y el contador del carro muestra 1

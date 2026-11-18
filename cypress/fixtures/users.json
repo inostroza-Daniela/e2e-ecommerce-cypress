@@ -1,17 +1,17 @@
 {
-  "standard": {
+  "estándar": {
     "username": "standard_user",
     "password": "secret_sauce"
   },
-  "locked out": {
+  "bloqueado": {
     "username": "locked_out_user",
     "password": "secret_sauce"
   },
-  "slow": {
+  "lento": {
     "username": "performance_glitch_user",
     "password": "secret_sauce"
   },
-  "unregistered": {
+  "no registrado": {
     "username": "unknown_shopper",
     "password": "not_the_password"
   }

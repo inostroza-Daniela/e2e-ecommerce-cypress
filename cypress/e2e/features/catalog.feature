@@ -1,45 +1,46 @@
+# language: es
 @catalog
-Feature: Product catalog
-  As a logged in customer
-  I want to explore the available products
-  So that I can find what I want to buy
+Característica: Catálogo de productos
+  Como cliente con sesión iniciada
+  Quiero explorar los productos disponibles
+  Para encontrar lo que quiero comprar
 
-  Background:
-    Given I am logged in as a "standard" customer
+  Antecedentes:
+    Dado que inicié sesión como cliente "estándar"
 
   @smoke
-  Scenario: Catalog lists every product with its price
-    Then I should see every product in the store with its price
+  Escenario: El catálogo muestra todos los productos con su precio
+    Entonces veo todos los productos de la tienda con su precio
 
-  Scenario Outline: Customer sorts the catalog by <sort option>
-    When I sort the products by "<sort option>"
-    Then the products should be ordered by <criterion> in <direction> order
+  Esquema del escenario: Cliente ordena el catálogo por <opción>
+    Cuando ordeno los productos por "<opción>"
+    Entonces los productos quedan ordenados por <criterio> en orden <dirección>
 
-    Examples:
-      | sort option         | criterion | direction  |
-      | Name (A to Z)       | name      | ascending  |
-      | Name (Z to A)       | name      | descending |
-      | Price (low to high) | price     | ascending  |
-      | Price (high to low) | price     | descending |
+    Ejemplos:
+      | opción              | criterio | dirección   |
+      | Name (A to Z)       | nombre   | ascendente  |
+      | Name (Z to A)       | nombre   | descendente |
+      | Price (low to high) | precio   | ascendente  |
+      | Price (high to low) | precio   | descendente |
 
-  Scenario: Product details match the catalog listing
-    When I open the details of "Sauce Labs Fleece Jacket"
-    Then I should see the name and price listed in the catalog for that product
-    When I go back to the products
-    Then I should see the product catalog
+  Escenario: El detalle del producto coincide con el catálogo
+    Cuando abro el detalle de "Sauce Labs Fleece Jacket"
+    Entonces veo el nombre y el precio que muestra el catálogo para ese producto
+    Cuando vuelvo a los productos
+    Entonces veo el catálogo de productos
 
   @responsive
-  Scenario Outline: Catalog layout adapts to a <device> screen
-    Given I am using a "<device>" screen
-    Then the products should be displayed in <grid>
-    And each product image should be placed <position> its details
+  Esquema del escenario: El catálogo se adapta a una pantalla de <dispositivo>
+    Dado que uso una pantalla de "<dispositivo>"
+    Entonces los productos se muestran en <grilla>
+    Y la imagen de cada producto queda <posición> su descripción
 
-    Examples:
-      | device  | grid      | position |
-      | mobile  | 1 column  | above    |
-      | tablet  | 1 column  | beside   |
-      | desktop | 2 columns | beside   |
+    Ejemplos:
+      | dispositivo | grilla     | posición          |
+      | móvil       | 1 columna  | arriba de         |
+      | tablet      | 1 columna  | a la izquierda de |
+      | escritorio  | 2 columnas | a la izquierda de |
 
   @visual
-  Scenario: Catalog page matches the approved design
-    Then the page should match the approved "catalog-page" design
+  Escenario: La página del catálogo coincide con el diseño aprobado
+    Entonces la página coincide con el diseño aprobado "catalog-page"

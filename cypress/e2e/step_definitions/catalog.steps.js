@@ -1,7 +1,25 @@
-import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import { Given, When, Then, defineParameterType } from '@badeball/cypress-cucumber-preprocessor';
 import inventoryPage from '../../pages/InventoryPage';
 import productDetailPage from '../../pages/ProductDetailPage';
 import { findProducts, parseAmount } from '../../support/utils';
+
+const SORT_CRITERIA = {
+  nombre: 'name',
+  precio: 'price',
+};
+
+const SORT_DIRECTIONS = ['ascendente', 'descendente'];
+
+const IMAGE_POSITIONS = {
+  'arriba de': 'above',
+  'a la izquierda de': 'beside',
+};
+
+defineParameterType({
+  name: 'imagePosition',
+  regexp: new RegExp(Object.keys(IMAGE_POSITIONS).join('|')),
+  transformer: (label) => IMAGE_POSITIONS[label],
+});
 
 const SORT_READERS = {
   name: (el) => el.innerText.trim(),
@@ -23,7 +41,7 @@ const SORTABLE_ELEMENTS = {
   price: () => inventoryPage.elements.prices(),
 };
 
-Then('I should see every product in the store with its price', () => {
+Then('veo todos los productos de la tienda con su precio', () => {
   cy.fixture('products').then((catalog) => {
     const expected = catalog.map(({ name, price }) => ({ name, price }));
     inventoryPage.elements.cards().should('have.length', expected.length);
@@ -31,32 +49,33 @@ Then('I should see every product in the store with its price', () => {
   });
 });
 
-When('I sort the products by {string}', (optionLabel) => {
+When('ordeno los productos por {string}', (optionLabel) => {
   inventoryPage.sortBy(optionLabel);
 });
 
-Then('the products should be ordered by {word} in {word} order', (criterion, direction) => {
-  if (!SORT_READERS[criterion] || !['ascending', 'descending'].includes(direction)) {
-    throw new Error(`Unsupported sort expectation: ${criterion} ${direction}`);
+Then('los productos quedan ordenados por {word} en orden {word}', (criterionLabel, direction) => {
+  const criterion = SORT_CRITERIA[criterionLabel];
+  if (!criterion || !SORT_DIRECTIONS.includes(direction)) {
+    throw new Error(`Unsupported sort expectation: ${criterionLabel} ${direction}`);
   }
 
   SORTABLE_ELEMENTS[criterion]().should(($elements) => {
     const actual = Cypress._.map($elements, SORT_READERS[criterion]);
     const expected = [...actual].sort(SORT_COMPARATORS[criterion]);
-    if (direction === 'descending') {
+    if (direction === 'descendente') {
       expected.reverse();
     }
     expect(actual).to.deep.equal(expected);
   });
 });
 
-When('I open the details of {string}', (productName) => {
+When('abro el detalle de {string}', (productName) => {
   inventoryPage.openProduct(productName);
   cy.location('pathname').should('eq', productDetailPage.path);
   cy.wrap(productName).as('viewedProduct');
 });
 
-Then('I should see the name and price listed in the catalog for that product', () => {
+Then('veo el nombre y el precio que muestra el catálogo para ese producto', () => {
   cy.fixture('products').then((catalog) => {
     cy.get('@viewedProduct').then((productName) => {
       const [product] = findProducts(catalog, [productName]);
@@ -71,11 +90,11 @@ Then('I should see the name and price listed in the catalog for that product', (
   });
 });
 
-When('I go back to the products', () => {
+When('vuelvo a los productos', () => {
   productDetailPage.backToProducts();
 });
 
-Given('I am using a {string} screen', (device) => {
+Given('que uso una pantalla de {string}', (device) => {
   cy.fixture('devices').then((devices) => {
     const viewport = devices[device];
     if (!viewport) {
@@ -85,7 +104,7 @@ Given('I am using a {string} screen', (device) => {
   });
 });
 
-Then('the products should be displayed in {int} column(s)', (columns) => {
+Then('los productos se muestran en {int} columna(s)', (columns) => {
   inventoryPage.elements.cards().should(($cards) => {
     const firstRowTop = Math.round($cards[0].getBoundingClientRect().top);
     const firstRow = Cypress._.filter(
@@ -96,11 +115,8 @@ Then('the products should be displayed in {int} column(s)', (columns) => {
   });
 });
 
-Then('each product image should be placed {word} its details', (position) => {
+Then('la imagen de cada producto queda {imagePosition} su descripción', (position) => {
   const check = IMAGE_POSITION_CHECKS[position];
-  if (!check) {
-    throw new Error(`Unsupported image position "${position}"`);
-  }
 
   inventoryPage.elements.cards().should(($cards) => {
     Cypress._.each($cards, (card) => {

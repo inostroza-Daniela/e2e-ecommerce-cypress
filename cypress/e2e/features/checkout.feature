@@ -1,49 +1,50 @@
+# language: es
 @checkout
-Feature: Checkout
-  As a customer with products in my cart
-  I want to complete my purchase
-  So that my order is placed
+Característica: Proceso de compra
+  Como cliente con productos en el carro
+  Quiero completar mi compra
+  Para que mi pedido quede registrado
 
-  Background:
-    Given I am logged in as a "standard" customer
+  Antecedentes:
+    Dado que inicié sesión como cliente "estándar"
 
   @smoke @e2e
-  Scenario: Customer buys products from the catalog
-    When I add the following products to the cart:
-      | product                 |
+  Escenario: Cliente compra productos del catálogo
+    Cuando agrego los siguientes productos al carro:
+      | producto                |
       | Sauce Labs Backpack     |
       | Sauce Labs Bolt T-Shirt |
-    And I open the cart
-    Then the cart should list each selected product with quantity 1 and its catalog price
-    When I proceed to checkout
-    And I submit my shipping information
-    Then the order overview should list the selected products
-    And the order total should be the item total plus 8% tax
-    When I confirm the order
-    Then I should see the order confirmation
-    And the cart counter should not be displayed
+    Y abro el carro
+    Entonces el carro muestra cada producto elegido con cantidad 1 y su precio de catálogo
+    Cuando paso al checkout
+    Y envío mis datos de despacho
+    Entonces el resumen del pedido muestra los productos elegidos
+    Y el total del pedido es el subtotal más 8% de impuesto
+    Cuando confirmo el pedido
+    Entonces veo la confirmación del pedido
+    Y no se muestra el contador del carro
 
-  Scenario Outline: Shipping information requires the <missing field>
-    Given my cart already contains:
-      | product           |
+  Esquema del escenario: Los datos de despacho exigen el <campo>
+    Dado que mi carro ya contiene:
+      | producto          |
       | Sauce Labs Onesie |
-    When I open the cart
-    And I proceed to checkout
-    And I submit my shipping information without the "<missing field>"
-    Then I should see the checkout error "<message>"
-    And I should remain on the shipping information step
+    Cuando abro el carro
+    Y paso al checkout
+    Y envío mis datos de despacho sin el "<campo>"
+    Entonces veo el error de checkout "<mensaje>"
+    Y sigo en el paso de datos de despacho
 
-    Examples:
-      | missing field | message                        |
-      | first name    | Error: First Name is required  |
-      | last name     | Error: Last Name is required   |
-      | postal code   | Error: Postal Code is required |
+    Ejemplos:
+      | campo         | mensaje                        |
+      | nombre        | Error: First Name is required  |
+      | apellido      | Error: Last Name is required   |
+      | código postal | Error: Postal Code is required |
 
-  Scenario: Cancelling checkout keeps the cart intact
-    Given my cart already contains:
-      | product               |
+  Escenario: Cancelar el checkout mantiene el carro intacto
+    Dado que mi carro ya contiene:
+      | producto              |
       | Sauce Labs Bike Light |
-    When I open the cart
-    And I proceed to checkout
-    And I cancel the checkout
-    Then the cart should only contain "Sauce Labs Bike Light"
+    Cuando abro el carro
+    Y paso al checkout
+    Y cancelo el checkout
+    Entonces el carro solo contiene "Sauce Labs Bike Light"
