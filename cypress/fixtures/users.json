@@ -1,0 +1,18 @@
+{
+  "standard": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "locked out": {
+    "username": "locked_out_user",
+    "password": "secret_sauce"
+  },
+  "slow": {
+    "username": "performance_glitch_user",
+    "password": "secret_sauce"
+  },
+  "unregistered": {
+    "username": "unknown_shopper",
+    "password": "not_the_password"
+  }
+}

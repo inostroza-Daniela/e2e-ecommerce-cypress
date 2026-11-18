@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+cypress/reports
+cypress/screenshots
+cypress/videos
+cypress/downloads
+**/__diff_output__
+.DS_Store

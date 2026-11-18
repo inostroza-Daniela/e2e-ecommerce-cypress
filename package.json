@@ -1,0 +1,38 @@
+{
+  "name": "e2e-ecommerce-cypress",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end UI test suite for an e-commerce web app built with Cypress, Cucumber (BDD) and the Page Object Model.",
+  "author": "Daniela Inostroza Mancilla (https://github.com/inostroza-Daniela)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inostroza-Daniela/e2e-ecommerce-cypress.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "cy:open": "cypress open --e2e --browser electron",
+    "test": "cypress run --browser electron",
+    "test:local": "cypress run --browser electron --expose \"tags=not @visual\"",
+    "test:smoke": "cypress run --browser electron --expose tags=@smoke",
+    "lint": "eslint .",
+    "docker:build": "docker build --platform linux/amd64 -t e2e-ecommerce-cypress .",
+    "docker:test": "docker run --rm --platform linux/amd64 -v \"$PWD/cypress/reports:/e2e/cypress/reports\" -v \"$PWD/cypress/screenshots:/e2e/cypress/screenshots\" -v \"$PWD/cypress/snapshots:/e2e/cypress/snapshots\" e2e-ecommerce-cypress",
+    "docker:snapshots": "npm run docker:test -- --browser electron --expose \"tags=@visual,updateSnapshots=true\""
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^28.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "@eslint/js": "^10.0.1",
+    "@simonsmith/cypress-image-snapshot": "^11.0.0",
+    "cypress": "16.2.1",
+    "cypress-mochawesome-reporter": "^5.0.0",
+    "cypress-on-fix": "^1.1.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.14.0",
+    "eslint-plugin-cypress": "^7.0.2",
+    "globals": "^17.13.0"
+  }
+}

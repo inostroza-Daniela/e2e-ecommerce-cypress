@@ -1,0 +1,95 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: Cucumber tag expression to filter scenarios (e.g. @smoke)
+        required: false
+        default: ''
+      update_snapshots:
+        description: Regenerate visual baselines and publish them as an artifact
+        type: boolean
+        default: false
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Lint
+        run: npm run lint
+
+  e2e:
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build test image
+        run: docker build -t e2e-ecommerce-cypress .
+
+      - name: Run E2E suite
+        env:
+          TAGS: ${{ inputs.tags }}
+          UPDATE_SNAPSHOTS: ${{ inputs.update_snapshots }}
+        run: |
+          if [ "$UPDATE_SNAPSHOTS" = "true" ]; then
+            EXPOSE="updateSnapshots=true,tags=@visual"
+          else
+            EXPOSE="requireSnapshots=true"
+            if [ -n "$TAGS" ]; then EXPOSE="$EXPOSE,tags=$TAGS"; fi
+          fi
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE/cypress/reports:/e2e/cypress/reports" \
+            -v "$GITHUB_WORKSPACE/cypress/screenshots:/e2e/cypress/screenshots" \
+            -v "$GITHUB_WORKSPACE/cypress/snapshots:/e2e/cypress/snapshots" \
+            e2e-ecommerce-cypress \
+            --browser electron --expose "$EXPOSE"
+
+      - name: Upload Mochawesome report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mochawesome-report
+          path: cypress/reports
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload visual baselines
+        if: inputs.update_snapshots
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-baselines
+          path: cypress/snapshots
+          retention-days: 7
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-evidence
+          path: |
+            cypress/screenshots
+            cypress/snapshots/**/__diff_output__
+          if-no-files-found: ignore
+          retention-days: 14
