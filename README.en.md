@@ -189,9 +189,10 @@ The `.github/workflows/demo.yml` workflow (**Demo Recording**) records the purch
 - UI texts (error messages, sort options, product names) stay in English because that is how the site displays them.
 - Tests run against a public site; one retry is enabled in run mode to absorb transient network issues without hiding consistent failures.
 
-## Author
+## Author and license
 
-**Daniela Inostroza Mancilla** · QA Automation Engineer
-[GitHub](https://github.com/inostroza-Daniela) · [LinkedIn](https://www.linkedin.com/in/daniela-inostrozam/)
+**Daniela Inostroza Mancilla** · [LinkedIn](https://www.linkedin.com/in/daniela-inostrozam/) · [GitHub](https://github.com/inostroza-Daniela)
 
-Licensed under the [MIT License](LICENSE).
+The repository code (Gherkin scenarios, step definitions, Page Objects, configuration and workflows) is distributed under the [MIT License](LICENSE). You may use, copy, modify and redistribute it, including commercially, as long as the copyright notice and the license are kept.
+
+The application under test, Swag Labs, belongs to [Sauce Labs](https://saucelabs.com) and its [source code](https://github.com/saucelabs/sample-app-web) is published under its own MIT License. It is not part of this repository: screenshots of the site in the demo (`docs/`) and in the visual regression baselines (`cypress/snapshots/`) are included only to document the tests. This project is not affiliated with Sauce Labs.

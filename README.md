@@ -189,9 +189,10 @@ El workflow `.github/workflows/demo.yml` (**Demo Recording**) graba el escenario
 - Los textos de la interfaz (mensajes de error, opciones de ordenamiento, nombres de productos) están en inglés porque así los muestra el sitio.
 - Los tests corren contra un sitio público; en modo run se permite un reintento para absorber fallas de red puntuales sin ocultar fallas consistentes.
 
-## Autora
+## Autora y licencia
 
-**Daniela Inostroza Mancilla** · QA Automation Engineer
-[GitHub](https://github.com/inostroza-Daniela) · [LinkedIn](https://www.linkedin.com/in/daniela-inostrozam/)
+**Daniela Inostroza Mancilla** · [LinkedIn](https://www.linkedin.com/in/daniela-inostrozam/) · [GitHub](https://github.com/inostroza-Daniela)
 
-Distribuido bajo la [licencia MIT](LICENSE).
+El código del repositorio (escenarios Gherkin, step definitions, Page Objects, configuración y workflows) se distribuye bajo la [licencia MIT](LICENSE). Puedes usarlo, copiarlo, modificarlo y redistribuirlo, incluso comercialmente, conservando el aviso de copyright y la licencia.
+
+La aplicación bajo prueba, Swag Labs, pertenece a [Sauce Labs](https://saucelabs.com) y su [código fuente](https://github.com/saucelabs/sample-app-web) se publica bajo su propia licencia MIT. No forma parte de este repositorio: las capturas del sitio que aparecen en la demo (`docs/`) y en las imágenes base de la regresión visual (`cypress/snapshots/`) se incluyen solo para documentar las pruebas. Este proyecto no está afiliado a Sauce Labs.
